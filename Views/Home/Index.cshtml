@@ -4,21 +4,14 @@
 
 @model BooksListViewModel
 
-    <h1>Mac's Marvelous Bookstore</h1>
-
 @foreach (Project p in Model.Projects)
 {
-    <li><b>Title: @p.Title</b></li>
-
-    <ul>
-        <li>Id: @p.BookId</li>
-        <li>ISBN: @p.ISBN</li>
-        <li>Author: @p.Author</li>
-        <li>Publisher: @p.Publisher</li>
-        <li>Category: @p.Classification / @p.Category</li>
-        <li>Pages: @p.PageCount pages</li>
-        <li>Price: $@p.Price</li>
-    </ul>
+    <partial name="BookSummary" model="p"/>
 }
 
-<div page-model="@Model.PaginationInfo" page-action="Index"></div>
+<div page-model="@Model.PaginationInfo"
+     page-action="Index"
+     page-enabled="true"
+     page-class="btn"
+     page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary"></div>

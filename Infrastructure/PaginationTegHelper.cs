@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -9,41 +8,52 @@ using Mission11.Models.ViewModels;
 namespace Mission11.Infrastructure
 {
     [HtmlTargetElement("div", Attributes = "page-model")]
-    public class PaginationTegHelper : TagHelper
+    public class PaginationTagHelper : TagHelper
     {
-        private IUrlHelperFactory urlHelperFactory;
+        private readonly IUrlHelperFactory _urlHelperFactory;
 
-        public PaginationTegHelper (IUrlHelperFactory temp)
+        public PaginationTagHelper(IUrlHelperFactory urlHelperFactory)
         {
-            urlHelperFactory = temp;
+            _urlHelperFactory = urlHelperFactory;
         }
+
         [ViewContext]
         [HtmlAttributeNotBound]
         public ViewContext? ViewContext { get; set; }
-        public string? PageAction { get; set; }
-        public PaginationInfo PageModel { get; set; }
+
+        public PaginationInfo? PageModel { get; set; }
+
+        public bool PageEnabled { get; set; } = false;
+        public string PageAction { get; set; } = string.Empty;
+        public string PageClass { get; set; } = string.Empty;
+        public string PageClassNormal { get; set; } = string.Empty;
+        public string PageClassSelected { get; set; } = string.Empty;
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (ViewContext != null && PageModel != null) 
+            if (ViewContext != null && PageModel != null)
             {
-                IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+                var urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
 
-                TagBuilder result = new TagBuilder("div");
+                var result = new TagBuilder("div");
 
                 for (int i = 1; i <= PageModel.TotalNumPages; i++)
                 {
-                    TagBuilder tag = new TagBuilder("a");
-
+                    var tag = new TagBuilder("a");
                     tag.Attributes["href"] = urlHelper.Action(PageAction, new { pageNum = i });
-                    tag.InnerHtml.Append(i.ToString());
 
+                    if (PageEnabled)
+                    {
+                        tag.AddCssClass(PageClass);
+                        tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
+                    }
+
+                    tag.InnerHtml.Append(i.ToString());
                     result.InnerHtml.AppendHtml(tag);
                 }
 
                 output.Content.AppendHtml(result.InnerHtml);
             }
         }
-
     }
 }
