@@ -5,6 +5,8 @@ using System.Diagnostics;
 
 namespace Mission11.Controllers
 {
+    // Main controller
+
     public class HomeController : Controller
     {
         private IBooksRepository _repo;
@@ -12,6 +14,7 @@ namespace Mission11.Controllers
         {
             _repo = temp;
         }
+        // Index action using linq to order data and cards
         public IActionResult Index(int pageNum) 
         {
             int pageSize = 10;

@@ -2,6 +2,7 @@
 
 namespace Mission11.Models
 {
+    // Class Project that sets the base for the database to be displayed
     public class Project
     {
         [Key]

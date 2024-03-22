@@ -3,7 +3,7 @@
 }
 
 @model BooksListViewModel
-
+<!-- for loop that displays the info for each card -->
 @foreach (Project p in Model.Projects)
 {
     <partial name="BookSummary" model="p"/>

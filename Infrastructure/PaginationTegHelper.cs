@@ -11,7 +11,8 @@ namespace Mission11.Infrastructure
     public class PaginationTagHelper : TagHelper
     {
         private readonly IUrlHelperFactory _urlHelperFactory;
-
+       
+        // URL Helper
         public PaginationTagHelper(IUrlHelperFactory urlHelperFactory)
         {
             _urlHelperFactory = urlHelperFactory;
@@ -21,6 +22,7 @@ namespace Mission11.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext? ViewContext { get; set; }
 
+        // Creation of getters and setters to dynamically style
         public PaginationInfo? PageModel { get; set; }
 
         public bool PageEnabled { get; set; } = false;
